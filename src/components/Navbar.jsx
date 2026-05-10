@@ -8,13 +8,13 @@ export function Navbar({ onPrivacyClick }) {
         <a
           href="#inicio"
           className="flex items-center gap-3 rounded-lg focus:outline-none focus:ring-4 focus:ring-slate-200"
-          aria-label="Fast-Track Admin, inicio"
+          aria-label="Puente Ciudadano, inicio"
         >
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-950 text-sm font-bold text-white">
-            FT
+            PC
           </span>
           <span className="text-base font-bold tracking-tight text-slate-950">
-            Fast-Track Admin
+            Puente Ciudadano
           </span>
         </a>
 

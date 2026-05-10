@@ -19,11 +19,11 @@ export function ExitModal({ procedure, onClose, onConfirm, onPrivacyClick }) {
           id="exit-modal-title"
           className="mt-3 text-2xl font-bold tracking-tight"
         >
-          Vas a salir de Fast-Track
+          Vas a salir de Puente Ciudadano
         </h2>
 
         <p className="mt-4 text-base leading-7 text-slate-700">
-          Vas a salir de Fast-Track para entrar en la Sede Oficial de{" "}
+          Vas a salir de Puente Ciudadano para entrar en la Sede Oficial de{" "}
           {procedure.organization}. Comprueba que la URL es segura antes de
           identificarte.
         </p>
@@ -38,7 +38,7 @@ export function ExitModal({ procedure, onClose, onConfirm, onPrivacyClick }) {
         </div>
 
         <p className="mt-5 text-sm leading-6 text-slate-600">
-          Fast-Track no pedirá tu contraseña ni firmará en tu nombre. La
+          Puente Ciudadano no pedirá tu contraseña ni firmará en tu nombre. La
           identificación se realiza solo dentro de la sede oficial.
         </p>
 
@@ -56,7 +56,7 @@ export function ExitModal({ procedure, onClose, onConfirm, onPrivacyClick }) {
             onClick={onClose}
             className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-base font-semibold text-slate-900 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
           >
-            Volver a Fast-Track
+            Volver a Puente Ciudadano
           </button>
 
           <button

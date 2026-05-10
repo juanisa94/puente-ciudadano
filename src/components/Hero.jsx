@@ -67,7 +67,7 @@ export function Hero({ onPrivacyClick }) {
           </h2>
 
           <p className="mt-4 text-base leading-7 text-slate-300">
-            Fast-Track funciona como una guía técnica. Tú accedes desde tu
+            Puente Ciudadano funciona como una guía técnica. Tú accedes desde tu
             equipo, revisas cada dato y confirmas el trámite dentro de la sede
             oficial correspondiente.
           </p>

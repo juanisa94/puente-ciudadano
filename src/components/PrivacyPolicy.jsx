@@ -16,7 +16,7 @@ const guarantees = [
   {
     title: 'Arquitectura "local-first"',
     icon: Laptop,
-    text: "Local-first significa que el proceso importante sucede en tu propio equipo. Tu certificado digital nunca sale de tu ordenador y Fast-Track no tiene un almacén de claves.",
+    text: "Local-first significa que el proceso importante sucede en tu propio equipo. Tu certificado digital nunca sale de tu ordenador y Puente Ciudadano no tiene un almacén de claves.",
   },
   {
     title: "Datos tratados",
@@ -26,7 +26,7 @@ const guarantees = [
   {
     title: "Salida segura",
     icon: ArrowUpRight,
-    text: "Antes de salir hacia una sede oficial, mostramos un aviso para que compruebes el organismo y la dirección. Así sabes cuándo estás dejando Fast-Track.",
+    text: "Antes de salir hacia una sede oficial, mostramos un aviso para que compruebes el organismo y la dirección. Así sabes cuándo estás dejando Puente Ciudadano.",
   },
   {
     title: "Derechos RGPD",
@@ -55,7 +55,7 @@ export function PrivacyPolicy() {
               Cómo protegemos tu privacidad
             </h2>
             <p className="mt-3 text-base leading-7 text-slate-700">
-              La claridad es más importante que la letra pequeña: Fast-Track te
+              La claridad es más importante que la letra pequeña: Puente Ciudadano te
               guía, pero no guarda tus claves ni tus datos sensibles.
             </p>
           </div>

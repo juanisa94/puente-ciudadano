@@ -48,7 +48,7 @@ export function Dashboard() {
                 Local-first por diseño
               </h2>
               <p className="mt-4 text-base leading-7 text-slate-700">
-                Fast-Track guía el proceso, pero no custodia claves ni ejecuta
+                Puente Ciudadano guía el proceso, pero no custodia claves ni ejecuta
                 firmas. El usuario mantiene el control de su certificado en todo
                 momento.
               </p>
