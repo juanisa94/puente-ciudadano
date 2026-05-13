@@ -13,7 +13,8 @@ export const contactChannels = {
    * Pega el enlace completo, p. ej. https://chat.whatsapp.com/AbCdEfGh...
    * Déjalo vacío para usar solo wa.me al número whatsappDirect.
    */
-  whatsappGroupInviteUrl: "",
+  whatsappGroupInviteUrl:
+    "https://chat.whatsapp.com/FUyjbAhkoERDF5sJOzIx0t",
 };
 
 export function buildContactMessage(serviceTitle = "mi situación") {
