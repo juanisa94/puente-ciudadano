@@ -16,7 +16,7 @@ const guarantees = [
   {
     title: 'Arquitectura "local-first"',
     icon: Laptop,
-    text: "Local-first significa que el proceso importante sucede en tu propio equipo. Tu certificado digital nunca sale de tu ordenador y Puente Ciudadano no tiene un almacén de claves.",
+    text: "Local-first significa que no centralizamos datos sensibles. La primera orientación se hace por teléfono y no tenemos un almacén de claves ni documentos personales.",
   },
   {
     title: "Datos tratados",
