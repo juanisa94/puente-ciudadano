@@ -7,7 +7,7 @@ import {
   HeartHandshake,
   Home,
   Landmark,
-  PhoneCall,
+  Phone,
   ShieldCheck,
   UsersRound,
 } from "lucide-react";
@@ -192,7 +192,7 @@ function ServiceItem({ service, onContactClick }) {
         onClick={() => onContactClick(service.title)}
         className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
       >
-        <PhoneCall className="h-4 w-4" aria-hidden="true" />
+        <Phone className="h-4 w-4" aria-hidden="true" />
         Consultar mi situación por teléfono
       </button>
     </article>

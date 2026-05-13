@@ -3,3 +3,6 @@ dist/
 .env
 .env.*
 npm-debug.log*
+
+# Legacy Bootstrap landing assets (no usados por la app React actual)
+/images/
