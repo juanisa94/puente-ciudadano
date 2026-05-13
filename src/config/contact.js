@@ -32,6 +32,11 @@ export function usesWhatsAppGroup() {
   );
 }
 
+/** Enlace de invitación (sin espacios) para copiar o comprobar. */
+export function getWhatsAppGroupInviteUrl() {
+  return contactChannels.whatsappGroupInviteUrl?.trim() ?? "";
+}
+
 /** URL para abrir WhatsApp (grupo si está configurado; si no, chat directo con texto). */
 export function buildWhatsAppHref(serviceTitle) {
   const groupUrl = contactChannels.whatsappGroupInviteUrl?.trim();

@@ -4,34 +4,56 @@ import {
   buildContactMessage,
   buildTelHref,
   buildWhatsAppHref,
+  getWhatsAppGroupInviteUrl,
   usesWhatsAppGroup,
 } from "../config/contact";
 
 export function ContactChoiceModal({ serviceTitle, onClose }) {
-  const [copyState, setCopyState] = useState("idle");
+  const [messageCopyFeedback, setMessageCopyFeedback] = useState("idle");
+  const [linkCopyFeedback, setLinkCopyFeedback] = useState("idle");
 
   if (!serviceTitle) {
     return null;
   }
 
   const isGroup = usesWhatsAppGroup();
+  const groupInviteUrl = getWhatsAppGroupInviteUrl();
 
   async function handleCopySuggestedMessage() {
     try {
       await navigator.clipboard.writeText(buildContactMessage(serviceTitle));
-      setCopyState("ok");
-      setTimeout(() => setCopyState("idle"), 2200);
+      setMessageCopyFeedback("ok");
+      setTimeout(() => setMessageCopyFeedback("idle"), 2200);
     } catch {
-      setCopyState("err");
-      setTimeout(() => setCopyState("idle"), 2200);
+      setMessageCopyFeedback("err");
+      setTimeout(() => setMessageCopyFeedback("idle"), 2200);
     }
   }
-  const copyButtonLabel =
-    copyState === "ok"
+
+  async function handleCopyGroupLink() {
+    try {
+      await navigator.clipboard.writeText(groupInviteUrl);
+      setLinkCopyFeedback("ok");
+      setTimeout(() => setLinkCopyFeedback("idle"), 2200);
+    } catch {
+      setLinkCopyFeedback("err");
+      setTimeout(() => setLinkCopyFeedback("idle"), 2200);
+    }
+  }
+
+  const messageCopyLabel =
+    messageCopyFeedback === "ok"
       ? "Mensaje copiado"
-      : copyState === "err"
+      : messageCopyFeedback === "err"
         ? "No se pudo copiar"
         : "Copiar mensaje sugerido para pegar en el grupo";
+
+  const linkCopyLabel =
+    linkCopyFeedback === "ok"
+      ? "Enlace copiado"
+      : linkCopyFeedback === "err"
+        ? "No se pudo copiar"
+        : "Copiar enlace del grupo";
 
   return (
     <div
@@ -81,7 +103,8 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
           <a
             href={buildWhatsAppHref(serviceTitle)}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
+            title="Invitación al grupo de WhatsApp"
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
@@ -90,18 +113,38 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
         </div>
 
         {isGroup ? (
-          <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-            <p className="text-xs leading-5 text-slate-700">
-              Abrirá el grupo de atención: el mensaje lo pueden leer todas las
-              personas del grupo (por ejemplo, ambos asesores).
-            </p>
+          <div className="mt-4 space-y-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <div>
+              <p className="text-xs leading-5 text-slate-700">
+                Este botón abre la{" "}
+                <strong className="text-slate-900">invitación al grupo</strong>
+                , no un chat oculto con un solo número. Si en el grupo tenéis
+                activado que las personas nuevas tienen que ser aceptadas o han
+                de escribir a un administrador,{" "}
+                <strong className="text-slate-900">
+                  ese primer mensaje puede llegar como chat privado a un admin
+                  (a veces al núm. donde está la cuenta gestora).
+                </strong>{" "}
+                Eso depende solo de cómo está configurado el grupo en
+                WhatsApp. Cuando la persona ya está dentro del grupo, lo que
+                escriba en el grupo lo ven todos los miembros.
+              </p>
+            </div>
             <button
               type="button"
               onClick={handleCopySuggestedMessage}
-              className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
+              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
             >
-              <ClipboardCopy className="h-4 w-4" aria-hidden="true" />
-              {copyButtonLabel}
+              <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {messageCopyLabel}
+            </button>
+            <button
+              type="button"
+              onClick={handleCopyGroupLink}
+              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
+            >
+              <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {linkCopyLabel}
             </button>
           </div>
         ) : null}
