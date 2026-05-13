@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FirstCallSection } from "./FirstCallSection";
+import { FloatingContact } from "./FloatingContact";
 import { Hero } from "./Hero";
 import { Navbar } from "./Navbar";
 import { PrivacyModal } from "./PrivacyModal";
@@ -103,6 +104,8 @@ export function Dashboard() {
       {isPrivacyModalOpen && (
         <PrivacyModal onClose={() => setIsPrivacyModalOpen(false)} />
       )}
+
+      <FloatingContact />
     </div>
   );
 }

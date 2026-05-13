@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   UsersRound,
 } from "lucide-react";
+import { useState } from "react";
+import { ContactChoiceModal } from "./ContactChoiceModal";
 
 const serviceAreas = [
   {
@@ -167,7 +169,7 @@ const serviceAreas = [
   },
 ];
 
-function ServiceItem({ service }) {
+function ServiceItem({ service, onContactClick }) {
   const Icon = service.icon;
 
   return (
@@ -187,6 +189,7 @@ function ServiceItem({ service }) {
 
       <button
         type="button"
+        onClick={() => onContactClick(service.title)}
         className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
       >
         <PhoneCall className="h-4 w-4" aria-hidden="true" />
@@ -197,6 +200,8 @@ function ServiceItem({ service }) {
 }
 
 export function ServiceCatalog() {
+  const [selectedServiceTitle, setSelectedServiceTitle] = useState(null);
+
   return (
     <section id="servicios" className="bg-slate-50">
       <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
@@ -245,7 +250,11 @@ export function ServiceCatalog() {
 
                 <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                   {area.services.map((service) => (
-                    <ServiceItem key={service.title} service={service} />
+                    <ServiceItem
+                      key={service.title}
+                      service={service}
+                      onContactClick={setSelectedServiceTitle}
+                    />
                   ))}
                 </div>
               </section>
@@ -253,6 +262,11 @@ export function ServiceCatalog() {
           })}
         </div>
       </div>
+
+      <ContactChoiceModal
+        serviceTitle={selectedServiceTitle}
+        onClose={() => setSelectedServiceTitle(null)}
+      />
     </section>
   );
 }
