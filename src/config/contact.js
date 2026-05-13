@@ -1,19 +1,24 @@
 /**
- * Separación estricta de canales (Marco Veritas):
- * - Voz / llamada → siempre tel:+34695056887
- * - Mensajes WhatsApp → siempre wa.me/34624266445 (nunca el número de voz)
- *
- * No intercambiar estos valores: mezclarlos genera abandono por desconfianza.
+ * Separación de canales (Marco Veritas):
+ * - Voz → solo tel:+voicePhoneDigits (34695056887)
+ * - Escritura WhatsApp → una de dos cosas (nunca el número de voz):
+ *   1) Si hay whatsAppGroupInviteUrl: abrimos el GRUPO (varios asesores ven el mismo chat).
+ *   2) Si está vacío: wa.me solo al whatsAppMessagesDigits (34624266445).
  */
 
 export const contactChannels = {
-  /** Llamadas de voz (único número para tel:) */
   voicePhoneDigits: "34695056887",
-  /** Solo mensajes por WhatsApp (único número para wa.me) */
   whatsAppMessagesDigits: "34624266445",
+  /**
+   * Enlace de invitación al grupo (WhatsApp → grupo → invitar por enlace).
+   * Ambos asesores deben estar en el grupo. Los clientes entran aquí y escriben;
+   * todos los miembros ven los mensajes en el grupo.
+   * Déjelo vacío ("") si queréis usar solo mensajes privados wa.me al número de arriba.
+   */
+  whatsAppGroupInviteUrl:
+    "https://chat.whatsapp.com/L2zrhSNjgkBCzXuNKJ6RY9",
 };
 
-/** Legible para pie de pantalla / persona mayor (+34 XXX XXX XXX). */
 export function formatVoicePhoneDisplay() {
   const d = contactChannels.voicePhoneDigits;
   const national = d.startsWith("34") ? d.slice(2) : d;
@@ -26,6 +31,14 @@ export function formatWhatsAppPhoneDisplay() {
   return `+34 ${national.slice(0, 3)} ${national.slice(3, 6)} ${national.slice(6)}`;
 }
 
+export function usesWhatsAppGroup() {
+  return Boolean(contactChannels.whatsAppGroupInviteUrl?.trim());
+}
+
+export function getWhatsAppGroupInviteUrl() {
+  return contactChannels.whatsAppGroupInviteUrl?.trim() ?? "";
+}
+
 export function buildContactMessage(serviceTitle = "mi situación") {
   return `Hola, escribo desde la web y necesito orientación tranquila sobre ${serviceTitle}. ¿Podemos hablar cuando podáis?`;
 }
@@ -34,7 +47,18 @@ export function buildTelHref() {
   return `tel:+${contactChannels.voicePhoneDigits}`;
 }
 
+/** Destino único del botón WhatsApp de la web (grupo si está configurado). */
 export function buildWhatsAppHref(serviceTitle) {
+  const groupUrl = contactChannels.whatsAppGroupInviteUrl?.trim();
+  if (groupUrl) {
+    return groupUrl;
+  }
+  const query = encodeURIComponent(buildContactMessage(serviceTitle));
+  return `https://wa.me/${contactChannels.whatsAppMessagesDigits}?text=${query}`;
+}
+
+/** wa.me al número de mensajes (para “opción privada” en el modal si hay grupo). */
+export function buildWhatsAppDirectHref(serviceTitle) {
   const query = encodeURIComponent(buildContactMessage(serviceTitle));
   return `https://wa.me/${contactChannels.whatsAppMessagesDigits}?text=${query}`;
 }

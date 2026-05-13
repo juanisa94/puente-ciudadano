@@ -3,35 +3,73 @@ import { useState } from "react";
 import {
   buildContactMessage,
   buildTelHref,
+  buildWhatsAppDirectHref,
   buildWhatsAppHref,
   formatVoicePhoneDisplay,
   formatWhatsAppPhoneDisplay,
+  getWhatsAppGroupInviteUrl,
+  usesWhatsAppGroup,
 } from "../config/contact";
 
 export function ContactChoiceModal({ serviceTitle, onClose }) {
-  const [copyFeedback, setCopyFeedback] = useState("idle");
+  const [msgCopyFeedback, setMsgCopyFeedback] = useState("idle");
+  const [linkCopyFeedback, setLinkCopyFeedback] = useState("idle");
+
+  const isGroup = usesWhatsAppGroup();
 
   if (!serviceTitle) {
     return null;
   }
 
+  const groupInviteUrl = getWhatsAppGroupInviteUrl();
+
   async function handleCopySuggestedMessage() {
     try {
       await navigator.clipboard.writeText(buildContactMessage(serviceTitle));
-      setCopyFeedback("ok");
-      setTimeout(() => setCopyFeedback("idle"), 2200);
+      setMsgCopyFeedback("ok");
+      setTimeout(() => setMsgCopyFeedback("idle"), 2200);
     } catch {
-      setCopyFeedback("err");
-      setTimeout(() => setCopyFeedback("idle"), 2200);
+      setMsgCopyFeedback("err");
+      setTimeout(() => setMsgCopyFeedback("idle"), 2200);
     }
   }
 
-  const copyLabel =
-    copyFeedback === "ok"
+  async function handleCopyGroupLink() {
+    try {
+      await navigator.clipboard.writeText(groupInviteUrl);
+      setLinkCopyFeedback("ok");
+      setTimeout(() => setLinkCopyFeedback("idle"), 2200);
+    } catch {
+      setLinkCopyFeedback("err");
+      setTimeout(() => setLinkCopyFeedback("idle"), 2200);
+    }
+  }
+
+  const msgCopyLabel =
+    msgCopyFeedback === "ok"
       ? "Texto copiado"
-      : copyFeedback === "err"
+      : msgCopyFeedback === "err"
         ? "No se pudo copiar"
-        : "Copiar texto sugerido para WhatsApp";
+        : "Copiar texto para pegar en WhatsApp";
+
+  const linkCopyLabel =
+    linkCopyFeedback === "ok"
+      ? "Enlace copiado"
+      : linkCopyFeedback === "err"
+        ? "No se pudo copiar"
+        : "Copiar enlace del grupo";
+
+  const whatsPrimaryLabel = isGroup
+    ? "Entrar al grupo de WhatsApp del equipo"
+    : "Escribir por WhatsApp";
+
+  const whatsPrimarySr = isGroup
+    ? "Abrir invitación al grupo de WhatsApp donde pueden leer varios asesores. La llamada de voz sigue siendo otro número."
+    : `Abrir WhatsApp al número solo mensajes ${formatWhatsAppPhoneDisplay()}, distinto del teléfono de llamadas`;
+
+  const whatsPrimaryTitle = isGroup
+    ? "Grupo del equipo: varios asesores pueden leer el mismo chat"
+    : `WhatsApp mensajes al ${formatWhatsAppPhoneDisplay()}`;
 
   return (
     <div
@@ -70,13 +108,26 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
         </p>
 
         <p className="mt-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-600">
-          <span className="font-semibold text-slate-800">Llamada de voz:</span>{" "}
+          <span className="font-semibold text-slate-800">Solo llamadas de voz:</span>{" "}
           {formatVoicePhoneDisplay()}
-          <br />
-          <span className="font-semibold text-slate-800">
-            WhatsApp (mensajes):
-          </span>{" "}
-          {formatWhatsAppPhoneDisplay()} — otro número, solo escritura.
+          {isGroup ? (
+            <>
+              <br />
+              <span className="font-semibold text-slate-800">
+                WhatsApp (recomendado, equipo):
+              </span>{" "}
+              grupo donde varios asesores ven el mismo chat. No usa el número de
+              llamadas.
+            </>
+          ) : (
+            <>
+              <br />
+              <span className="font-semibold text-slate-800">
+                WhatsApp (mensajes):
+              </span>{" "}
+              {formatWhatsAppPhoneDisplay()} — otro número, solo escritura.
+            </>
+          )}
         </p>
 
         <div className="mt-6 grid gap-3">
@@ -96,23 +147,33 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
             href={buildWhatsAppHref(serviceTitle)}
             target="_blank"
             rel="noopener noreferrer"
-            title={`WhatsApp mensajes al ${formatWhatsAppPhoneDisplay()}`}
+            title={whatsPrimaryTitle}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
           >
             <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
-            <span>Escribir por WhatsApp</span>
-            <span className="sr-only">
-              {" "}
-              al número solo mensajes {formatWhatsAppPhoneDisplay()}, distinto
-              del teléfono de llamadas
-            </span>
+            <span>{whatsPrimaryLabel}</span>
+            <span className="sr-only"> {whatsPrimarySr}</span>
           </a>
         </div>
 
+        {isGroup ? (
+          <p className="mt-3 text-center">
+            <a
+              href={buildWhatsAppDirectHref(serviceTitle)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-slate-600 underline-offset-4 transition hover:text-slate-950 hover:underline focus:outline-none focus:ring-4 focus:ring-slate-200"
+            >
+              Prefiero escribir solo al {formatWhatsAppPhoneDisplay()}
+            </a>
+          </p>
+        ) : null}
+
         <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
           <p className="text-xs leading-5 text-slate-700">
-            Si quiere, puede pegar un texto corto en WhatsApp; también puede
-            enviar solo “hola” y le iremos preguntando con calma.
+            {isGroup
+              ? "En el grupo puede pegar un texto corto o decir solo «hola»; le iremos guiando con calma. El enlace del grupo no rellena el mensaje solo: puede copiar el texto de abajo."
+              : "Puede pegar un texto corto en WhatsApp o enviar solo «hola»; le iremos preguntando con calma."}
           </p>
           <button
             type="button"
@@ -120,8 +181,18 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
             className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
           >
             <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
-            {copyLabel}
+            {msgCopyLabel}
           </button>
+          {isGroup ? (
+            <button
+              type="button"
+              onClick={handleCopyGroupLink}
+              className="mt-2 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
+            >
+              <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {linkCopyLabel}
+            </button>
+          ) : null}
         </div>
 
         <p className="mt-5 text-xs leading-5 text-slate-500">
