@@ -22,7 +22,7 @@ export function Hero({ onPrivacyClick }) {
               href="#servicios"
               className="inline-flex min-h-14 items-center justify-center rounded-xl bg-slate-950 px-7 py-4 text-base font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
             >
-              Consultar mi situación por teléfono
+              Pedir orientación gratuita
             </a>
 
             <button

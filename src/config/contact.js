@@ -1,49 +1,40 @@
 /**
- * Canal de llamadas: un solo número.
- * WhatsApp a un grupo: ambos asesores deben estar dentro del mismo grupo y
- * publicar aquí el enlace de invitación (WhatsApp → Grupo → Ajustes → Enlace).
- * WhatsApp no permite que un mensaje a un número “llegue” a otro número;
- * el grupo es la forma habitual de que lo vean varias personas a la vez.
+ * Separación estricta de canales (Marco Veritas):
+ * - Voz / llamada → siempre tel:+34695056887
+ * - Mensajes WhatsApp → siempre wa.me/34624266445 (nunca el número de voz)
+ *
+ * No intercambiar estos valores: mezclarlos genera abandono por desconfianza.
  */
+
 export const contactChannels = {
-  phone: "34695056887",
-  /** Fallback si aún no hay grupo: chat directo con el número de WhatsApp. */
-  whatsappDirect: "34624266445",
-  /**
-   * Pega el enlace completo, p. ej. https://chat.whatsapp.com/AbCdEfGh...
-   * Déjalo vacío para usar solo wa.me al número whatsappDirect.
-   */
-  whatsappGroupInviteUrl:
-    "https://chat.whatsapp.com/L2zrhSNjgkBCzXuNKJ6RY9",
+  /** Llamadas de voz (único número para tel:) */
+  voicePhoneDigits: "34695056887",
+  /** Solo mensajes por WhatsApp (único número para wa.me) */
+  whatsAppMessagesDigits: "34624266445",
 };
 
+/** Legible para pie de pantalla / persona mayor (+34 XXX XXX XXX). */
+export function formatVoicePhoneDisplay() {
+  const d = contactChannels.voicePhoneDigits;
+  const national = d.startsWith("34") ? d.slice(2) : d;
+  return `+34 ${national.slice(0, 3)} ${national.slice(3, 6)} ${national.slice(6)}`;
+}
+
+export function formatWhatsAppPhoneDisplay() {
+  const d = contactChannels.whatsAppMessagesDigits;
+  const national = d.startsWith("34") ? d.slice(2) : d;
+  return `+34 ${national.slice(0, 3)} ${national.slice(3, 6)} ${national.slice(6)}`;
+}
+
 export function buildContactMessage(serviceTitle = "mi situación") {
-  return `Hola, necesito orientación con el trámite de ${serviceTitle}. ¿Podemos hablar?`;
+  return `Hola, escribo desde la web y necesito orientación tranquila sobre ${serviceTitle}. ¿Podemos hablar cuando podáis?`;
 }
 
 export function buildTelHref() {
-  return `tel:+${contactChannels.phone}`;
+  return `tel:+${contactChannels.voicePhoneDigits}`;
 }
 
-export function usesWhatsAppGroup() {
-  return Boolean(
-    contactChannels.whatsappGroupInviteUrl &&
-      contactChannels.whatsappGroupInviteUrl.trim().length > 0,
-  );
-}
-
-/** Enlace de invitación (sin espacios) para copiar o comprobar. */
-export function getWhatsAppGroupInviteUrl() {
-  return contactChannels.whatsappGroupInviteUrl?.trim() ?? "";
-}
-
-/** URL para abrir WhatsApp (grupo si está configurado; si no, chat directo con texto). */
 export function buildWhatsAppHref(serviceTitle) {
-  const groupUrl = contactChannels.whatsappGroupInviteUrl?.trim();
-  if (groupUrl) {
-    return groupUrl;
-  }
-  return `https://wa.me/${contactChannels.whatsappDirect}?text=${encodeURIComponent(
-    buildContactMessage(serviceTitle),
-  )}`;
+  const query = encodeURIComponent(buildContactMessage(serviceTitle));
+  return `https://wa.me/${contactChannels.whatsAppMessagesDigits}?text=${query}`;
 }

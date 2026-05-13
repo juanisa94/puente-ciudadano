@@ -4,56 +4,34 @@ import {
   buildContactMessage,
   buildTelHref,
   buildWhatsAppHref,
-  getWhatsAppGroupInviteUrl,
-  usesWhatsAppGroup,
+  formatVoicePhoneDisplay,
+  formatWhatsAppPhoneDisplay,
 } from "../config/contact";
 
 export function ContactChoiceModal({ serviceTitle, onClose }) {
-  const [messageCopyFeedback, setMessageCopyFeedback] = useState("idle");
-  const [linkCopyFeedback, setLinkCopyFeedback] = useState("idle");
+  const [copyFeedback, setCopyFeedback] = useState("idle");
 
   if (!serviceTitle) {
     return null;
   }
 
-  const isGroup = usesWhatsAppGroup();
-  const groupInviteUrl = getWhatsAppGroupInviteUrl();
-
   async function handleCopySuggestedMessage() {
     try {
       await navigator.clipboard.writeText(buildContactMessage(serviceTitle));
-      setMessageCopyFeedback("ok");
-      setTimeout(() => setMessageCopyFeedback("idle"), 2200);
+      setCopyFeedback("ok");
+      setTimeout(() => setCopyFeedback("idle"), 2200);
     } catch {
-      setMessageCopyFeedback("err");
-      setTimeout(() => setMessageCopyFeedback("idle"), 2200);
+      setCopyFeedback("err");
+      setTimeout(() => setCopyFeedback("idle"), 2200);
     }
   }
 
-  async function handleCopyGroupLink() {
-    try {
-      await navigator.clipboard.writeText(groupInviteUrl);
-      setLinkCopyFeedback("ok");
-      setTimeout(() => setLinkCopyFeedback("idle"), 2200);
-    } catch {
-      setLinkCopyFeedback("err");
-      setTimeout(() => setLinkCopyFeedback("idle"), 2200);
-    }
-  }
-
-  const messageCopyLabel =
-    messageCopyFeedback === "ok"
-      ? "Mensaje copiado"
-      : messageCopyFeedback === "err"
+  const copyLabel =
+    copyFeedback === "ok"
+      ? "Texto copiado"
+      : copyFeedback === "err"
         ? "No se pudo copiar"
-        : "Copiar mensaje sugerido para pegar en el grupo";
-
-  const linkCopyLabel =
-    linkCopyFeedback === "ok"
-      ? "Enlace copiado"
-      : linkCopyFeedback === "err"
-        ? "No se pudo copiar"
-        : "Copiar enlace del grupo";
+        : "Copiar texto sugerido para WhatsApp";
 
   return (
     <div
@@ -62,17 +40,17 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
       aria-modal="true"
       aria-labelledby="contact-choice-title"
     >
-      <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+      <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-lg shadow-slate-950/10">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-slate-500">
-              Contacto seguro
+              Contacto tranquilo
             </p>
             <h2
               id="contact-choice-title"
               className="mt-2 text-2xl font-bold tracking-tight text-slate-950"
             >
-              ¿Cómo prefieres hablar?
+              ¿Prefiere llamarnos o escribirnos?
             </h2>
           </div>
 
@@ -87,8 +65,18 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
         </div>
 
         <p className="mt-4 text-sm leading-6 text-slate-700">
-          Elige el canal que prefieras para recibir orientación sobre{" "}
-          <strong>{serviceTitle}</strong>.
+          Primera orientación gratuita sobre{" "}
+          <strong>{serviceTitle}</strong>. Elija lo que le resulte más cómodo.
+        </p>
+
+        <p className="mt-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-600">
+          <span className="font-semibold text-slate-800">Llamada de voz:</span>{" "}
+          {formatVoicePhoneDisplay()}
+          <br />
+          <span className="font-semibold text-slate-800">
+            WhatsApp (mensajes):
+          </span>{" "}
+          {formatWhatsAppPhoneDisplay()} — otro número, solo escritura.
         </p>
 
         <div className="mt-6 grid gap-3">
@@ -96,63 +84,50 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
             href={buildTelHref()}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
           >
-            <Phone className="h-4 w-4" aria-hidden="true" />
-            Llamar para asesoría gratuita
+            <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>Llamar para orientación gratuita</span>
+            <span className="sr-only">
+              {" "}
+              al número de voz {formatVoicePhoneDisplay()}
+            </span>
           </a>
 
           <a
             href={buildWhatsAppHref(serviceTitle)}
             target="_blank"
             rel="noopener noreferrer"
-            title="Invitación al grupo de WhatsApp"
+            title={`WhatsApp mensajes al ${formatWhatsAppPhoneDisplay()}`}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-950 transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200"
           >
-            <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            Consultar por WhatsApp
+            <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>Escribir por WhatsApp</span>
+            <span className="sr-only">
+              {" "}
+              al número solo mensajes {formatWhatsAppPhoneDisplay()}, distinto
+              del teléfono de llamadas
+            </span>
           </a>
         </div>
 
-        {isGroup ? (
-          <div className="mt-4 space-y-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-            <div>
-              <p className="text-xs leading-5 text-slate-700">
-                Este botón abre la{" "}
-                <strong className="text-slate-900">invitación al grupo</strong>
-                , no un chat oculto con un solo número. Si en el grupo tenéis
-                activado que las personas nuevas tienen que ser aceptadas o han
-                de escribir a un administrador,{" "}
-                <strong className="text-slate-900">
-                  ese primer mensaje puede llegar como chat privado a un admin
-                  (a veces al núm. donde está la cuenta gestora).
-                </strong>{" "}
-                Eso depende solo de cómo está configurado el grupo en
-                WhatsApp. Cuando la persona ya está dentro del grupo, lo que
-                escriba en el grupo lo ven todos los miembros.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={handleCopySuggestedMessage}
-              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
-            >
-              <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
-              {messageCopyLabel}
-            </button>
-            <button
-              type="button"
-              onClick={handleCopyGroupLink}
-              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
-            >
-              <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
-              {linkCopyLabel}
-            </button>
-          </div>
-        ) : null}
+        <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <p className="text-xs leading-5 text-slate-700">
+            Si quiere, puede pegar un texto corto en WhatsApp; también puede
+            enviar solo “hola” y le iremos preguntando con calma.
+          </p>
+          <button
+            type="button"
+            onClick={handleCopySuggestedMessage}
+            className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-xs font-semibold text-slate-900 transition hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200"
+          >
+            <ClipboardCopy className="h-4 w-4 shrink-0" aria-hidden="true" />
+            {copyLabel}
+          </button>
+        </div>
 
         <p className="mt-5 text-xs leading-5 text-slate-500">
-          Líneas de atención oficial. Sus datos están protegidos bajo nuestra
-          política Local-First. No compartas contraseñas, códigos ni documentos
-          sensibles por este primer contacto.
+          Puente Ciudadano no es una sede oficial. Sus datos están protegidos
+          según nuestra política Local-First. No comparta contraseñas ni
+          documentos sensibles en este primer contacto.
         </p>
       </div>
     </div>

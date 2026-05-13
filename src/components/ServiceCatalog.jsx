@@ -175,7 +175,7 @@ function ServiceItem({ service, onContactClick }) {
   return (
     <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5">
       <div className="flex items-start gap-4">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </div>
 
@@ -192,8 +192,8 @@ function ServiceItem({ service, onContactClick }) {
         onClick={() => onContactClick(service.title)}
         className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
       >
-        <Phone className="h-4 w-4" aria-hidden="true" />
-        Consultar mi situación por teléfono
+        <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+        Pedir orientación gratuita
       </button>
     </article>
   );
@@ -215,8 +215,9 @@ export function ServiceCatalog() {
           </h2>
 
           <p className="mt-4 text-lg leading-8 text-slate-700">
-            No necesitas saber el nombre exacto del trámite. Elige el área que
-            más se parece a tu situación y revisamos contigo el primer paso.
+            No hace falta saber el nombre exacto del trámite. Elija el tema que
+            más se parezca a su situación; el primer paso es orientación
+            gratuita, por llamada o por WhatsApp, sin prisa.
           </p>
         </div>
 
@@ -228,7 +229,7 @@ export function ServiceCatalog() {
               <section
                 key={area.title}
                 aria-labelledby={`${area.title.replaceAll(" ", "-").toLowerCase()}-title`}
-                className="rounded-3xl border border-slate-200 bg-white/70 p-5 lg:p-7"
+                className="rounded-3xl border border-slate-200 bg-white p-5 lg:p-7"
               >
                 <div className="flex flex-col gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-start">
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-950 text-white">

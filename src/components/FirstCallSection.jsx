@@ -14,7 +14,7 @@ const callSteps = [
   {
     title: "Te orientamos con claridad",
     icon: ClipboardCheck,
-    text: "Si podemos ayudarte, te explicamos el siguiente paso y cualquier presupuesto antes de empezar. Sin presión.",
+    text: "Si podemos ayudarte, te explicamos el siguiente paso con claridad y sin prisa. Solo cuando lo entiendas todo, decides si quieres seguir adelante.",
   },
 ];
 

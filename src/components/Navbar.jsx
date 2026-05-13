@@ -35,7 +35,7 @@ export function Navbar({ onPrivacyClick }) {
             href="#servicios"
             className="inline-flex min-h-11 items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
           >
-            Hablar con un asesor
+            Orientación gratuita
           </a>
           <button
             type="button"
