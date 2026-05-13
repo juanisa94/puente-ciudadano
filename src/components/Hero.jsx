@@ -4,16 +4,17 @@ export function Hero({ onPrivacyClick }) {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-28">
         <div className="flex flex-col justify-center">
           <p className="mb-5 inline-flex w-fit rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700">
-            Trámites 100% online con certificado digital local
+            Asesoría inicial por teléfono para trámites oficiales
           </p>
 
           <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-            Trámites online al momento, con tu propio certificado digital
+            Te ayudamos a entender qué trámite necesitas
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700">
-            Renta, becas y matrículas desde tu equipo. Te guiamos paso a paso
-            en procesos telemáticos seguros, sin papel ni desplazamientos.
+            Extranjería, ayudas económicas, familia, formación y trabajo. Nos
+            cuentas tu situación por teléfono y te orientamos con calma antes de
+            iniciar cualquier gestión.
           </p>
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -21,7 +22,7 @@ export function Hero({ onPrivacyClick }) {
               href="#servicios"
               className="inline-flex min-h-14 items-center justify-center rounded-xl bg-slate-950 px-7 py-4 text-base font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300"
             >
-              Elegir trámite oficial
+              Consultar mi situación por teléfono
             </a>
 
             <button
@@ -34,8 +35,8 @@ export function Hero({ onPrivacyClick }) {
           </div>
 
           <p className="mt-5 text-sm leading-6 text-slate-600">
-            No pedimos contraseñas, no copiamos certificados y no firmamos en tu
-            nombre.
+            No pedimos contraseñas, no copiamos documentos sensibles y no
+            firmamos en tu nombre.
           </p>
         </div>
 
@@ -63,20 +64,20 @@ export function Hero({ onPrivacyClick }) {
           </div>
 
           <h2 className="text-2xl font-bold tracking-tight">
-            Tu certificado sigue bajo tu control
+            Primero escuchamos tu caso
           </h2>
 
           <p className="mt-4 text-base leading-7 text-slate-300">
-            Puente Ciudadano funciona como una guía técnica. Tú accedes desde tu
-            equipo, revisas cada dato y confirmas el trámite dentro de la sede
-            oficial correspondiente.
+            Puente Ciudadano funciona como una guía inicial. Te ayudamos a
+            ordenar la información, detectar el área correcta y evitar pasos
+            innecesarios antes de entrar en una sede oficial.
           </p>
 
           <ul className="mt-8 space-y-4">
             {[
-              "Tu certificado permanece instalado en tu equipo.",
-              "Tú revisas y confirmas cada envío.",
-              "El trámite se realiza en plataformas oficiales compatibles.",
+              "Primero hablamos contigo por teléfono.",
+              "No hacemos promesas sobre resultados administrativos.",
+              "Si hay trámite online, te indicamos la sede oficial correspondiente.",
             ].map((item) => (
               <li key={item} className="flex gap-3">
                 <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-400 text-slate-950">

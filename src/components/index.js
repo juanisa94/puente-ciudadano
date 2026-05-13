@@ -1,8 +1,5 @@
 export { Dashboard } from "./Dashboard";
+export { FirstCallSection } from "./FirstCallSection";
 export { Hero } from "./Hero";
-export { Layout } from "./Layout";
-export { LocalFirstPrivacy } from "./LocalFirstPrivacy";
 export { Navbar } from "./Navbar";
-export { ServiceCard } from "./ServiceCard";
-export { ServiceIcon } from "./ServiceIcon";
-export { ServicesGrid } from "./ServicesGrid";
+export { ServiceCatalog } from "./ServiceCatalog";

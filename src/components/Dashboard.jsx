@@ -4,26 +4,16 @@ import {
   certificateSecurityRules,
   getCertificateReadinessChecklist,
 } from "../services/digitalCertificate";
-import { ExitModal } from "./ExitModal";
+import { FirstCallSection } from "./FirstCallSection";
 import { Hero } from "./Hero";
 import { Navbar } from "./Navbar";
 import { PrivacyModal } from "./PrivacyModal";
-import { ServicesGrid } from "./ServicesGrid";
+import { ServiceCatalog } from "./ServiceCatalog";
 
 export function Dashboard() {
   const readinessChecklist = getCertificateReadinessChecklist();
-  const [exitProcedure, setExitProcedure] = useState(null);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const errorMessages = Object.values(educationalErrorMessages);
-
-  function handleConfirmExit() {
-    if (!exitProcedure) {
-      return;
-    }
-
-    window.open(exitProcedure.officialUrl, "_blank", "noopener,noreferrer");
-    setExitProcedure(null);
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
@@ -31,6 +21,8 @@ export function Dashboard() {
 
       <main>
         <Hero onPrivacyClick={() => setIsPrivacyModalOpen(true)} />
+
+        <FirstCallSection />
 
         <section
           aria-labelledby="security-rules-title"
@@ -69,7 +61,7 @@ export function Dashboard() {
           </div>
         </section>
 
-        <ServicesGrid onSelectProcedure={setExitProcedure} />
+        <ServiceCatalog />
 
         <section
           aria-labelledby="checklist-title"
@@ -134,13 +126,6 @@ export function Dashboard() {
           </div>
         </section>
       </main>
-
-      <ExitModal
-        procedure={exitProcedure}
-        onClose={() => setExitProcedure(null)}
-        onConfirm={handleConfirmExit}
-        onPrivacyClick={() => setIsPrivacyModalOpen(true)}
-      />
 
       {isPrivacyModalOpen && (
         <PrivacyModal onClose={() => setIsPrivacyModalOpen(false)} />
