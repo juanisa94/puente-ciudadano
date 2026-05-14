@@ -164,7 +164,7 @@ export function ContactChoiceModal({ serviceTitle, onClose }) {
               rel="noopener noreferrer"
               className="text-xs font-semibold text-slate-600 underline-offset-4 transition hover:text-slate-950 hover:underline focus:outline-none focus:ring-4 focus:ring-slate-200"
             >
-              Prefiero escribir solo al {formatWhatsAppPhoneDisplay()}
+              Prefiero escribir en privado al {formatVoicePhoneDisplay()}
             </a>
           </p>
         ) : null}

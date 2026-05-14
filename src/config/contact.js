@@ -1,9 +1,10 @@
 /**
- * Separación de canales (Marco Veritas):
- * - Voz → solo tel:+voicePhoneDigits (34695056887)
- * - Escritura WhatsApp → una de dos cosas (nunca el número de voz):
- *   1) Si hay whatsAppGroupInviteUrl: abrimos el GRUPO (varios asesores ven el mismo chat).
- *   2) Si está vacío: wa.me solo al whatsAppMessagesDigits (34624266445).
+ * Canales:
+ * - Voz → tel:+voicePhoneDigits (34695056887)
+ * - WhatsApp principal → si hay grupo: invitación al grupo (varios asesores).
+ *   Si no hay grupo: wa.me a whatsAppMessagesDigits (34624266445).
+ * - Si hay grupo, enlace opcional “Prefiero escribir solo”: wa.me a voicePhoneDigits
+ *   (mensaje privado al número donde también pueden llamar).
  */
 
 export const contactChannels = {
@@ -57,8 +58,8 @@ export function buildWhatsAppHref(serviceTitle) {
   return `https://wa.me/${contactChannels.whatsAppMessagesDigits}?text=${query}`;
 }
 
-/** wa.me al número de mensajes (para “opción privada” en el modal si hay grupo). */
+/** wa.me opción privada cuando hay grupo: mensaje al número de llamadas (no al grupo). */
 export function buildWhatsAppDirectHref(serviceTitle) {
   const query = encodeURIComponent(buildContactMessage(serviceTitle));
-  return `https://wa.me/${contactChannels.whatsAppMessagesDigits}?text=${query}`;
+  return `https://wa.me/${contactChannels.voicePhoneDigits}?text=${query}`;
 }
